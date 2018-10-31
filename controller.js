@@ -1,11 +1,37 @@
 /* KNAPPAR   *******************************************************************/
 
+// Enter i quick add
+$("#search").keyup(function(event){
+    if(event.keyCode == 13){
+        $("#quick_add").click();
+        $("#search").focus();  
+    }
+});
+
+// #purchase
+$(document).on('click', ".purchase", function() {
+    var item_id = $(this).parent().parent().find(".item_id").html();
+    var item = itemList.get_item(item_id);
+	 	itemList.set_item_field(item_id, "status",  "finished");
+ 		itemList.set_item_field(item.id, "update_date", moment().format('YYYY-MM-DD HH:mm:ss'));
+    open_page("#groceries");
+});
+
+// #put_on_list
+$(document).on('click', ".put_on_list", function() {
+    var item_id = $(this).parent().parent().find(".item_id").html();
+    var item = itemList.get_item(item_id);
+	 	itemList.set_item_field(item_id, "status",  "listed");
+    open_page("#groceries");
+});
+
+
 $(".add-button").click(function() {
    id = itemList.add_from_form(current_page+" form");
-	console.log(id);	 
+	console.log(id);
+	console.log(current_item);	 	 
 	if(current_item) {
 		itemList.add_relation(current_item.id, id);
-		if(current_item.type==3 || current_item.type==4) itemList.add_relation(itemList.get_parents(current_item.id)[0].id,id);
 	}	
 	awesomplete.list = itemList.get_quicklist();
 	//awesomplete2.list = itemList.get_quicklist();
@@ -33,36 +59,15 @@ $(".cancel-button").click(function() {
 }); 
 
 
-$('#task_list input[type=search]').on('search', function () {
-     open_page("#task_list");
+$('#groceries input[type=search]').on('search', function () {
+     open_page("#groceries");
 });
 
 
-$("#status_filter").change(function() { 
- open_page("#task_list");
-}); 
-
-$("#prio_filter").change(function() { 
- open_page("#task_list");
-}); 
-
-$("#task_list .type_filter").change(function() { 
-	 open_page("#task_list");
-}); 
- 
-
-$("#single_issue .type_filter").change(function() { 
-	 console.log("hej");
-	open_page("#single_issue");
-}); 
- 
-$("#search").focus(function() { 
-    $("#extra-controls").show();
-}); 
 
 $("#search").keyup(function() { 
 	if($("#search").val().length >1)    
-		open_page("#task_list");
+		open_page("#groceries");
 }); 
 
 $(".delete-button").click(function() {
@@ -142,11 +147,11 @@ $(".more-button").click(function() {
 
 
 // NEW CHILD 
-$(document).on('click', ".subitem-right", function() {
+/*$(document).on('click', ".subitem-right", function() {
 	id = $(this).parent().find(".item_id").text();
 	item = itemList.get_item(id);
 	view_new( {title:"", type:"6", parent_id: item.id,  icon:"", prio:"1", category: item.category, postpone: ""});
-});
+});*/
 
 
 
@@ -243,12 +248,12 @@ $("#edit-button").click(function() {
 
 
 // GOTO SINGLE ISSUE
-$(document).on('click', "#task_list .subitem-center, #single_issue .subitem-center", function() {
+$(document).on('click', "#dishes .subitem-center", function() {
 	id = $(this).parent().find(".item_id").text();
 	current_item = itemList.get_item(id);
 
-	open_page("#single_issue");
-	//view_single_issue(id);
+	open_page("#single_dish");
+	view_single_dish(id);
 });
 
 
