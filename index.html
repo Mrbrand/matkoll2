@@ -111,10 +111,6 @@
 
 
 
-
-
-
-			
 <!--SINGLE GROCERY PAGE -------------->
 	<div id="single_grocery" class="page" style="display:none; min-height:450px;">
 	  
@@ -144,18 +140,7 @@
 						<option value="6">Idea</option>
 				</select>
 		</div><!end filter div>
-		<button class="new-item-button" style="float:right;" onclick="$('.new-item-div').toggle();">New</button>
-				<div class="new-item-div" style="position: absolute; width: 130px; height:300px; right:0; top: 100px; padding:10px; display:none; text-align: right;">
-					<!--button style="margin-bottom: 10px;">Idea</button><br-->
-					<button style="margin-bottom: 10px;" onclick='view_new({title:title, type:"2", icon:"", prio:"1", postpone:""});'>Project</button><br>
-					<button style="margin-bottom: 10px;" onclick='view_new({title:title, type:"3", icon:"", prio:"1", postpone:""});'>Area</button><br>
-					<button style="margin-bottom: 10px;" onclick='view_new({title:title, type:"4", icon:"", prio:"1", postpone:""});'>Milestone</button><br>
-					<button style="margin-bottom: 10px;" onclick='view_new({title:title, type:"5", icon:"", prio:"1", postpone:""});'>Task</button><br>
-					<button style="margin-bottom: 10px;" onclick='view_new({title:title, type:"6", icon:"", prio:"1", postpone:""});'>Idea</button><br>
-					<!--button style="margin-bottom: 10px;">Project Group</button><br>
-					<button style="margin-bottom: 10px;">Document</button-->				
-				</div>    
-
+		<button class="new-item-button" style="float:right;" onclick='view_new({title:title, type:"2", icon:"", prio:"1", postpone:""});'>New</button>
 	</div><!-- end controls-->
 	
 	<!-- Listor -->
@@ -176,61 +161,27 @@
 	<div id="dishes" class="page" style="display:none;">
 			  
 			<div class="header">
-				<div style="float:left;">
-				 
-				
-			<img height="48" src="img/dishes.png" onclick="open_page('#groceries');"/>
-
-				</div>
-				
-         <img class="pref-button" src="img/gear.png"  style="float:right; margin:5px; cursor:pointer;"/>
+					<div style="float:left;">
+							<img height="48" src="img/dishes.png" onclick="open_page('#groceries');"/>
+					</div>
+		      <img class="pref-button" src="img/gear.png"  style="float:right; margin:5px; cursor:pointer;"/>
 			</div> <!--end header-->
 			
 		<! Controls>
 			<div class="controls" style="height:40px; padding: 5px; position: relative;">
-				   <!    Search>        
-				<input id="search" type="search" placeholder="Search..." value="" style="width:70px; float:left; margin-left:5px;"/>
+				<!    Search>        
+				<input class="search" type="search" placeholder="Search..." value="" style="width:70px; float:left; margin-left:5px;" onkeyup="view_dishes();"/>
 
 				<!    Add>
         <button class="new-item-button" style="float:right;" onclick='view_new({title:title, type:"1", icon:"", prio:"1", status:"listed"});'">New</button>
      </div><!-- end controls-->
-
-		<! New types>
-			<div id="new-controls" class="controls" style="height:40px; padding: 5px; display:none;">
-        <button style="float:right; margin-right:5px; ">Idea</button>
-				<button style="float:right; margin-right:5px; ">Task</button>
-				<button style="float:right; margin-right:5px; ">Project</button>
-				<button style="float:right; margin-right:5px; ">Milestone</button>
-				<button style="float:right; margin-right:5px; ">Folder</button>
-				<button style="float:right; margin-right:5px; ">Doc</button>
-        	</div><!-- end controls-->
-
-		<! Extra Controls>
-			<div id="extra-controls" class="controls" style="height:40px; padding: 5px; display:none;">
-  
-				<div style="margin: 10px 10px; float:left;">
-		      <label><input type="radio" name="icon" value="📞" /><span>📞</span></label>
-					<label><input type="radio" name="icon" value="💻" /><span>💻</span></label>
-					<label><input type="radio" name="icon" value="📱" /><span>📱</span></label>
-					<label><input type="radio" name="icon" value="🏠" /><span>🏠</span></label>
-					<label><input type="radio" name="icon" value="🚶" /><span>🚶</span></label>
-					<label><input type="radio" name="icon" value="📝" /><span>📝</span></label>
-					<label><input type="radio" name="icon" value="🚘" /><span>🚘</span></label>
-					<label><input type="radio" name="icon" value="🎓" /><span>🎓</span></label>
-
-					<label><input type="radio" name="icon" value="" checked="checked" /><span>All</span></label>
-        		</div>
-
-			
-					
-			<button onclick="$('#extra-controls').hide();" style="float:right;">X</button>
-			
-          </div><!-- end controls-->
             
 	<!-- Listor -->
 	<div class="items">
 		<div class="listed" class="list-group"></div>
 		<div class="related"></div>
+		<div class="unrelated"></div>
+
 	</div><!-- end items--> 
 			
 </div><!-- end page-->
@@ -255,19 +206,11 @@
 	
 	<!--Sub-meny-->
 	<div class="controls">
+	
 		<!--button class="home-button"><img src="img/home16.png"</button-->
-		<button onclick="open_page('#dishes');" style="float:left;">Back</button>
-		<!--button class="new-item-button" style="float:right;" onclick="$('.new-item-div').toggle();">New</button>
-				<div class="new-item-div" style="position: absolute; width: 130px; height:300px; right:0; top: 100px; padding:10px; display:none; text-align: right;">
-					<!--button style="margin-bottom: 10px;">Idea</button><br>
-					<button style="margin-bottom: 10px;" onclick='view_new({title:title, type:"2", icon:"", prio:"1", postpone:""});'>Project</button><br>
-					<button style="margin-bottom: 10px;" onclick='view_new({title:title, type:"3", icon:"", prio:"1", postpone:""});'>Area</button><br>
-					<button style="margin-bottom: 10px;" onclick='view_new({title:title, type:"4", icon:"", prio:"1", postpone:""});'>Milestone</button><br>
-					<button style="margin-bottom: 10px;" onclick='view_new({title:title, type:"5", icon:"", prio:"1", postpone:""});'>Task</button><br>
-					<button style="margin-bottom: 10px;" onclick='view_new({title:title, type:"6", icon:"", prio:"1", postpone:""});'>Idea</button><br>
-					<!--button style="margin-bottom: 10px;">Project Group</button><br>
-					<button style="margin-bottom: 10px;">Document</button>				
-				</div-->    
+			<button onclick="open_page('#dishes');" style="float:left;">Back</button>
+			<!  Search>        
+			<input class="search" type="search" placeholder="Search..." value="" style="width:70px; float:left; margin-left:5px;" onkeyup="view_single_dish(current_item.id);"/>
 
 	</div><!-- end controls-->
 	
@@ -275,6 +218,7 @@
 	<div class="items">
 		<div class="listed" class="list-group"></div>
 		<div class="related"></div>
+		<hr style="border-top: 3px double #8c8b8b">
 		<div class="unrelated"></div>
 	</div><!-- end items--> 
 	
@@ -381,9 +325,8 @@
 				
 			<! PARENT >
 		        <span class="field-description">Parent item in tree</span>
-		        <input id="parent" class="autovalue"  type="text" placeholder="Type item name or id" style="margin-bottom:5px;height:40px; font-size:1.1em; width: 100%;"/>	
-		         	<div class="parents"></div>
-   			
+		        <div class="parents" style="margin:3px;"></div>
+						<input id="parent" class="autovalue"  type="text" placeholder="Type item name or id" style="margin-bottom:5px;height:40px; font-size:1.1em; width: 100%;"/>	
 
 			<! STATUS >
 				<input class="autovalue" name="status" type="text" style="margin-bottom:5px; height:50px; font-size:1.3em"/><br/>
@@ -581,6 +524,35 @@
 	</div><!-- end subitem  -->
 </script>	
 	
+
+<!-- Mustache template avslutade -->
+<script id="unrelated_template" type="text/template">
+	<div class="item task unrelated">
+						
+		<div class="subitem-left quick_edit_item">
+			<img class="prio-icon" src="img/prio{{prio}}.png"/>
+			<img class="type-icon" style="margin:4px 7px;" src="img/type{{type}}.png"/>
+ 			{{#scope}}<span style="padding:1px 2px ; border-radius:3px; font-size:10px;background: #ABC; color:#456; margin-left:5px;">{{scope}} min</span>{{/scope}}
+		</div>
+	
+
+	 <div class="subitem-right" style="width:160px; float: right;  height:40px; padding:15px 20px 10px 20px;;">
+    	<button class="add_to_dish" style="float:right;margin-right:5px;width:70px; "><img src="img/plus.png"></button>
+   </div>
+
+
+		<div class="subitem-center">
+			<div class="title" style="">{{title}}</div>
+		</div><!-- end subitem-center -->
+
+		<div style="clear:both;"></div>
+		
+		<span class="item_id" style="display:none;">{{id}}</span>
+		<span class="prio" style="display:none;">{{prio}}</span>
+		<span class="type" style="display:none;">{{type}}</span>
+	
+	</div><!-- end subitem  -->
+</script>	
 	
 
 

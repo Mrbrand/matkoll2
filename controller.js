@@ -1,12 +1,7 @@
 /* KNAPPAR   *******************************************************************/
 
-// Enter i quick add
-$("#search").keyup(function(event){
-    if(event.keyCode == 13){
-        $("#quick_add").click();
-        $("#search").focus();  
-    }
-});
+
+
 
 // #purchase
 $(document).on('click', ".purchase", function() {
@@ -14,7 +9,7 @@ $(document).on('click', ".purchase", function() {
     var item = itemList.get_item(item_id);
 	 	itemList.set_item_field(item_id, "status",  "finished");
  		itemList.set_item_field(item.id, "update_date", moment().format('YYYY-MM-DD HH:mm:ss'));
-    open_page("#groceries");
+    open_page(current_page);
 });
 
 // #put_on_list
@@ -22,7 +17,17 @@ $(document).on('click', ".put_on_list", function() {
     var item_id = $(this).parent().parent().find(".item_id").html();
     var item = itemList.get_item(item_id);
 	 	itemList.set_item_field(item_id, "status",  "listed");
-    open_page("#groceries");
+    open_page(current_page);
+});
+
+
+// #add_to_dish
+$(document).on('click', ".add_to_dish", function() {
+    var item_id = $(this).parent().parent().find(".item_id").html();
+		var item = itemList.get_item(item_id);	 	
+		itemList.add_relation(current_item.id, item_id);
+		itemList.add_relation(item_id, current_item.id);
+    open_page("#single_dish");
 });
 
 
@@ -30,9 +35,9 @@ $(".add-button").click(function() {
    id = itemList.add_from_form(current_page+" form");
 	console.log(id);
 	console.log(current_item);	 	 
-	if(current_item) {
+	/*if(current_item.id) {
 		itemList.add_relation(current_item.id, id);
-	}	
+	}	*/
 	awesomplete.list = itemList.get_quicklist();
 	//awesomplete2.list = itemList.get_quicklist();
    open_page(previous_page);
@@ -222,10 +227,11 @@ $(document).on('click', ".task .subitem-left, .issue .subitem-left", function() 
 		parents = itemList.get_parents(id);
 				$("#edit .parents").html("");
 				parents.forEach(function(item) {
-				$("#edit .parents").append("<span class='parent_item' data-parent='"+item.id+"'>"+	item.title+" x</span>");
+				$("#edit .parents").append("<div class='parent_item' data-parent='"+item.id+"'>"+	item.title+" x</div>");
 	  } );
     open_page ("#edit");
 });
+
 
 // Remove relation
 $(document).on('click', "#edit .parent_item", function() {
@@ -234,6 +240,7 @@ $(document).on('click', "#edit .parent_item", function() {
 	console.log(parent_id);	
 	console.log(child_id);	
 	itemList.remove_relation(parent_id, child_id);
+	itemList.remove_relation(child_id, parent_id); //för säkerhets skull
 	$(this).hide();
 });
 
@@ -251,7 +258,7 @@ $("#edit-button").click(function() {
 $(document).on('click', "#dishes .subitem-center", function() {
 	id = $(this).parent().find(".item_id").text();
 	current_item = itemList.get_item(id);
-
+	//console.log(id);
 	open_page("#single_dish");
 	view_single_dish(id);
 });

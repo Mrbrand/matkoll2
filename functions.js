@@ -59,7 +59,7 @@ function open_page (page_id, show_extra) {
 	else if(page_id == "#dishes") view_dishes();
 	else if(page_id == "#groceries") view_groceries();
 	else if(page_id == "#menu") view_settings(); 
-	
+	else if(page_id == "#single_dish") view_single_dish(current_item.id);
 	console.log(page_id);
 	
 	$(".page").hide();
@@ -75,160 +75,88 @@ function open_page (page_id, show_extra) {
 
 
 function view_groceries(){ 	
-	$('.new-item-div').hide();   
-	
-	debug.begin("Task_list");
-
+	// deklarationer
 	var query = $("#search").val().toLowerCase();
-   var icon = $('input[name="icon"]:checked').val();
-	//var status = $("#status_filter").val();
-
-  var items=itemList.get_all();
-	var listed_items=[];
-	var unlisted_items=[];
-	var items_with_meta = [];
+  	var items=itemList.get_all();
 	
-	
-	//if(type!="*") items=items.query("type", "==", type); 	// filtrera på type om type är vald	
-	if(icon) items=items.query("icon", "==", icon); 	// filtrera på ikon om ikon är vald	
-		
-	debug.comment("Före metadata");
-	
+		// filtrera items	
 		items =items
-			.query("notes", "!=", undefined) //ful-fix för att undvika crash vid filter nedan, (items som saknar notes)
-			.query("title, notes, parent_tree", "contains", query);
-	
-		//items = items.query("finish_date", "==", ""); 	// filtrera bort avslutade
-		items = items.query("type", "==", "2"); 	//filtrera på varor
+			.query("title, notes, parent_tree", "contains", query)
+			.query("type", "==", "2"); 	//filtrera på varor
+		
 		var listed_items = items.query("status", "==", "listed"); 	//filtrera på varor
 		var unlisted_items = items.query("status", "!=", "listed"); 	//filtrera på varor
-		
-	
-
-		console.log("listed_items: " + listed_items);
-		console.log("unlisted_items: " + unlisted_items);
-		//lägga till metadata så som parent_tree, subitem_count, etc 
-		items.forEach(function(item) {
-			items_with_meta.push(item_with_meta(item.id));
-		});
-		items = items_with_meta;
-		debug.comment("Efter metadata");
 	
 		//sortera items
-		unlisted_items.sort(firstBy("update_date",-1).thenBy("prio").thenBy("postpone") .thenBy("order_main"));
-
-	//sätta current_items för sortable	
-	current_items = items;
+		//unlisted_items.sort(firstBy("update_date",-1).thenBy("prio").thenBy("postpone") .thenBy("order_main"));
 	
-	//sätta current_items för sortable	
-	current_item = undefined;
-	
-
+	// output
 	if (listed_items.length == 0 & unlisted_items.length == 0) $("#groceries .listed").append("<div class='empty'>No items here</div>");  	//om inga items hittas
 	else {
 			mustache_output("#groceries .listed", listed_items, "#listed_template"); //! !!!!!!
 			mustache_output("#groceries .related", unlisted_items, "#related_template"); //! !!!!!!
 	}
-	if(document.getElementById('debug').checked) debug.stop("Slut");
 }
 
 
 
-
-
-
-
 function view_dishes(){ 	
-	$('.new-item-div').hide();   
-	
-	debug.begin("Task_list");
-
-	//var query = $("#search").val().toLowerCase();
-   var icon = $('input[name="icon"]:checked').val();
-	//var status = $("#status_filter").val();
-
-  var items=itemList.get_all();
-	var items_with_meta = [];
-	
-	
-	//if(type!="*") items=items.query("type", "==", type); 	// filtrera på type om type är vald	
-	if(icon) items=items.query("icon", "==", icon); 	// filtrera på ikon om ikon är vald	
+		// deklarationer
+		var query = $("#dishes .search").val().toLowerCase();
+		var items=itemList.get_all();
 		
-	debug.comment("Före metadata");
-	
+		// filtrera items
 		items =items
 			.query("notes", "!=", undefined) //ful-fix för att undvika crash vid filter nedan, (items som saknar notes)
-			//.query("title, notes, parent_tree", "contains", query);
-	
-		//items = items.query("finish_date", "==", ""); 	// filtrera bort avslutade
-		items = items.query("type", "==", "1"); 	//filtrera på varor
-		
-		//lägga till metadata så som parent_tree, subitem_count, etc 
-		items.forEach(function(item) {
-			items_with_meta.push(item_with_meta(item.id));
-		});
-		items = items_with_meta;
-		debug.comment("Efter metadata");
-	
-		//sortera items
-		//items.sort(firstBy("update_date",-1).thenBy("prio").thenBy("postpone") .thenBy("order_main"));
+			.query("title, notes, parent_tree", "contains", query)
+			.query("type", "==", "1"); 	//filtrera på varor
 
-	//sätta current_items för sortable	
-	current_items = items;
-	
-	//sätta current_items för sortable	
-	current_item = undefined;
-	
+		// sortera items
+		items.sort(firstBy("prio").thenBy("title"));
 
-	if (items.length == 0) $("#groceries .listed").append("<div class='empty'>No items here</div>");  	//om inga items hittas
-	else {
-			mustache_output("#dishes .listed", items, "#dish_template"); //! !!!!!!
-			
-	}
-	if(document.getElementById('debug').checked) debug.stop("Slut");
+		// output items
+		if (items.length == 0) $("#groceries .listed").append("<div class='empty'>No items here</div>");  	//om inga items hittas
+		else {
+				mustache_output("#dishes .listed", items, "#dish_template"); //! !!!!!!
+		}
 }
 
 
 
 
 function view_single_dish (id) {
-	$('.new-item-div').hide();   
-	$("#single_dish .type-icon").html("<img src='img/type"+current_item.type+".png'>");    	
-	$("#single_dish .menu-title").text(current_item.title);    
+		console.log(id);
 
-	var type = $("#single_issue .type_filter").val();
+		//titel för sida
+		current_item = itemList.get_item(id);
+		console.log(id);
+		$("#single_dish .type-icon").html("<img src='img/type"+current_item.type+".png'>");    	
+		$("#single_dish .menu-title").text(current_item.title);    
+		var query = $("#single_dish .search").val().toLowerCase();
+		//deklarera 
+		var related_items =itemList.get_children(id);
+		
+		var items =itemList.get_all()
+			.query("notes", "!=", undefined) //ful-fix för att undvika crash vid filter nedan, (items som saknar notes)
+			.query("title, notes, parent_tree", "contains", query)
+			.query("type", "==", "2"); 	//filtrera på varor
 	
-	var open_items_with_meta = [];
-	
-	var open_items =itemList.get_children(id).query("finish_date","==","");
-	
- 	if(type!="*") open_items=open_items.query("type", "==", type); 	// filtrera på type om type är vald	
-	
-	open_items.forEach(function(item) {
-		open_items_with_meta.push(item_with_meta(item.id));
-	});
-	open_items = open_items_with_meta;
-	open_items = open_items
-		.sort(firstBy("order").thenBy("update_date",-1));
-	
-    var finished_items = itemList.get_children(id)
-    	.query("finish_date","!=","")
-    	.sort(firstBy("finish_date",-1));
-			if(type!="*") finished_items=finished_items.query("type", "==", type); 	
-	
-	console.log("waddup");
-  	console.log(open_items);
+		var listed_items = related_items.query("status", "==", "listed");
+		var unlisted_items = related_items.query("status", "!=", "listed");
 
-	mustache_output("#open", open_items, "#open_task_template"); //! !!!!!!
+		console.log(listed_items);
+		console.log(unlisted_items);
+		console.log(related_items);
 	
-   mustache_output("#finished", finished_items, "#finished_task_template");
+		
+		mustache_output("#single_dish .listed", listed_items, "#listed_template"); 
+		mustache_output("#single_dish .related", unlisted_items, "#related_template"); 
+  	mustache_output("#single_dish .unrelated", items, "#unrelated_template");
    
- 	//sätta current_items för sortable	
-	current_items = open_items;
     // om listan är tom
-   if (open_items.length==0 && finished_items.length == 0) $("#open").append("<div class='empty'>No items</div>");
-
-	current_item = itemList.get_item(id);
+   if (listed_items.length==0 && unlisted_items.length == 0) $("#single_dish .listed").append("<div class='empty'>No items</div>");
+		
+	
 }
 
 

@@ -1,7 +1,7 @@
 // Carbon (Konstruktör)
 function Carbon(key){
     this.itemArray = [];
-		this.relationsArray = []; //lagrar projektdata
+		this.relationsArray = []; 
     this.storageKey =  key;
     
     //ladda från local storage

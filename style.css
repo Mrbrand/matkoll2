@@ -88,6 +88,7 @@ label > input:checked + span{ /* (CHECKED) IMAGE STYLES */
  .parent{font-size:12px;color:#AA6; font-weight:bold;}
  
 .finished{background: -webkit-linear-gradient(#99A, #778);}
+.unrelated{background: -webkit-linear-gradient(#BBC, #99A);}
 .finished>.subitem-center>.title{color:#CCC;}
 .finished>.subitem-center>.next_action_div>.notes{color:#CCC;}
 .finished>.subitem-left>img{opacity: 0.4;}
