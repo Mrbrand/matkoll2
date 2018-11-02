@@ -151,7 +151,7 @@ function view_single_dish (id) {
 		
 		mustache_output("#single_dish .listed", listed_items, "#listed_template"); 
 		mustache_output("#single_dish .related", unlisted_items, "#related_template"); 
-  	mustache_output("#single_dish .unrelated", items, "#unrelated_template");
+  		//mustache_output("#single_dish .unrelated", items, "#unrelated_template");
    
     // om listan är tom
    if (listed_items.length==0 && unlisted_items.length == 0) $("#single_dish .listed").append("<div class='empty'>No items</div>");
