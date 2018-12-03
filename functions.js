@@ -88,7 +88,7 @@ function view_groceries(){
 		var unlisted_items = items.query("status", "!=", "listed"); 	//filtrera på varor
 	
 		//sortera items
-		//unlisted_items.sort(firstBy("update_date",-1).thenBy("prio").thenBy("postpone") .thenBy("order_main"));
+		unlisted_items.sort(firstBy("update_date",-1).thenBy("prio"));
 	
 	// output
 	if (listed_items.length == 0 & unlisted_items.length == 0) $("#groceries .listed").append("<div class='empty'>No items here</div>");  	//om inga items hittas
