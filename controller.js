@@ -8,8 +8,8 @@ $(document).on('click', ".purchase", function() {
     var item_id = $(this).parent().parent().find(".item_id").html();
     var item = itemList.get_item(item_id);
 	 	itemList.set_item_field(item_id, "status",  "finished");
- 		itemList.set_item_field(item.id, "update_date", moment().format('YYYY-MM-DD HH:mm:ss'));
-    open_page(current_page);
+ 		itemList.set_item_field(item.id, "update_date", moment().format('YYYY-MM-DD HH:mm:ss'));    
+		open_page(current_page);
 });
 
 // #put_on_list
@@ -17,6 +17,7 @@ $(document).on('click', ".put_on_list", function() {
     var item_id = $(this).parent().parent().find(".item_id").html();
     var item = itemList.get_item(item_id);
 	 	itemList.set_item_field(item_id, "status",  "listed");
+		$('#search').val(''); 
     open_page(current_page);
 });
 
@@ -31,7 +32,7 @@ $(document).on('click', ".add_to_dish", function() {
 });
 
 
-$(".add-button").click(function() {
+$("#new .add-button").click(function() {
    id = itemList.add_from_form(current_page+" form");
 	console.log(id);
 	console.log(current_item);	 	 
@@ -43,19 +44,17 @@ $(".add-button").click(function() {
    open_page(previous_page);
 });
 
+$("#groceries .add-button").click(function() {
+	if($('#search').val() != "") {
+			itemList.add_item({title:$('#search').val(), type:'2', icon:'', prio:'1', status:'listed'}); 
+			$('#search').val(''); 
+	}
+	open_page("#groceries");
+});
 
 $(".back-button").click(function() { 
 		console.log(	 previous_page );
 		open_page(previous_page);
-});
-
-$(".up-button").click(function() { 	 
-var parents = itemList.get_parents(current_item.id);
-		if(parents !== undefined && parents.length != 0){	
-		current_item = itemList.get_parents(current_item.id)[0];
-		console.log(current_item);
-		open_page("#single_issue");
-	}
 });
 
 
